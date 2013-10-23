@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Расчет дипозитов</title>
+	<link type="text/css" href="css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="container">
+		<div class="span12" ng-controller="Deposit.depositFormController">
+			<div class="span4">
+				<div ng-show="previousCalculation.length">
+					<h5>Последние 5 расчетов</h5>
+					<ul class="nav nav-tabs nav-stacked">
+						<li ng-repeat="item in previousCalculation">
+							<a ng-click="showCalculation()" ng-switch on="item.timeType" href="javascript:void(0)">
+								Вклад: {{item.startValue}}, {{item.percent}}%, {{item.time}}
+								<span ng-switch-when="0">месяц(-ев)</span>
+								<span ng-switch-when="1">день(-ей)</span>
+							</a>
+						</li>
+					</ul>
+					<button class="btn" ng-click="clearCalculations()">Удалить</button>
+				</div>
+			</div>
+			<form name="depositForm" class="span3" ng-submit="calculateResult();">
+				<h5>Расчет вклада</h5>
+				<div class="control-group {{!depositForm.startValue.$valid&&'error'}}">
+					<label>Начальная сумма вклада</label>
+					<input name="startValue" type="text" value=""
+							ng-pattern="patterns.startValue"
+							ng-model="model.startValue"
+							ng-click="fieldClick($event)"
+							required
+							autocomplete="off"/>
+					<div class="text-warning" ng-show="model.startValue && model.startCourse">В иностранной валюте: {{exchange()}}</div>
+					<div class="text-error" ng-show="!depositForm.startValue.$valid">Введите корректную сумму вклада</div>
+				</div>
+				<div class="control-group {{!depositForm.percent.$valid&&'error'}}">
+					<label>Годовой процент вклада</label>
+					<input name="percent" type="text" value=""
+							ng-pattern="patterns.percent"
+							ng-model="model.percent"
+							ng-click="fieldClick($event)"
+							required
+							autocomplete="off" />
+					<div class="text-error" ng-show="!depositForm.percent.$valid">Введите корректные проценты</div>
+					<div class="text-error" ng-show="model.percentPrevious">Предыдущее значение {{model.percentPrevious}}</div>
+				</div>
+				<div class="control-group {{!depositForm.time.$valid&&'error'}}">
+					<label>Время вклада</label>
+					<input name="time" type="text" value=""
+							ng-pattern="patterns.time"
+							ng-model="model.time"
+							ng-click="fieldClick($event)"
+							autocomplete="off" />
+					<div class="text-error" ng-show="!depositForm.time.$valid">Введите корректное время вклада</div>
+				</div>
+				<div class="control-group">
+					<label class="radio"><input type="radio" name="model.timeType" ng-model="model.timeType" value="0" />Вклад в месяцах</label>
+					<label class="radio"><input type="radio" name="model.timeType" ng-model="model.timeType" value="1" />Вклад в днях</label>
+				</div>
+				<div class="control-group">
+					<label class="checkbox"><input type="checkbox" name="capitalize"
+													ng-model="model.isCapitalize" />Вклад c капитализацией процентов</label>
+				</div>
+				<div class="control-group {{!depositForm.startCourse.$valid&&'error'}}">
+					<label>Курс иностранной валюты на момент вклада</label>
+					<input name="startCourse" type="text" value=""
+							ng-pattern="patterns.startCourse"
+							ng-model="model.startCourse"
+							ng-click="fieldClick($event)"
+							autocomplete="off" />
+					<div class="text-error" ng-show="!depositForm.startCourse.$valid">Введите корректное значение курса</div>
+				</div>
+				<div class="control-group {{!depositForm.currencyPercent.$valid&&'error'}}">
+					<label>Проценты по вкладу в иностранной валюте</label>
+					<input name="currencyPercent" type="text" value=""
+							ng-pattern="patterns.currencyPercent"
+							ng-model="model.currencyPercent"
+							ng-click="fieldClick($event)"
+							autocomplete="off" />
+					<div class="text-error" ng-show="!depositForm.currencyPercent.$valid">Введите корректные проценты по валюте</div>
+				</div>
+				<div class="control-group" ng-show="model.isAdditional"><a href="javascript:void(0)" ng-click="showAdditional()">Отменить пополнение</a></div>
+				<div class="control-group" ng-show="!model.isAdditional"><a href="javascript:void(0)" ng-click="showAdditional()">Пополнить вклад</a></div>
+				<div class="control-group" ng-show="model.isAdditional">
+					<div class="control-group" ng-repeat="additional in model.additionals">
+						<p ng-show="!additional.isNew">
+							{{additional.value}}
+							<span ng-show="additional.timeType == 0">в {{additional.time}} месяц</span>
+							<span ng-show="additional.timeType == 1">на {{additional.time}} день</span>
+						</p>
+						<div ng-show="additional.isNew">
+							<input class="input-mini" type="text" name="additional_{{$index}}" ng-model="additional.value" ng-click="fieldClick($event)" />
+							<span ng-show="additional.timeType==0">в</span>
+							<span ng-show="additional.timeType==1">на</span>
+							<input class="input-mini" type="text" name="additional_{{$index}}.time" ng-model="additional.time" ng-click="fieldClick($event)" />
+							<span ng-show="additional.timeType == 0">месяц</span>
+							<span ng-show="additional.timeType == 1">день</span>
+							<p>
+								<label class="radio inline"><input type="radio" name="additional_{{$index}}.timeType" ng-model="additional.timeType" value="0" />месяц</label>
+								<label class="radio inline"><input type="radio" name="additional_{{$index}}.timeType" ng-model="additional.timeType" value="1" />день</label>
+							</p>
+						</div>
+					</div>
+					<button class="btn" ng-click="addNewAdditional()" onclick="return false;">Новое поступление</button>
+				</div>
+				<div class="control-group">
+					<div class="help-block" ng-show="!model.startValue"><small>Для начала расчёта, пожалуйста, введите сумму вклада</small></div>
+					<input type="submit" class="btn btn-primary" value="Рассчитать" ng-disabled="!model.startValue" />
+				</div>
+
+			</form>
+			<div class="span4" ng-show="model.result">
+				<h5>Результат:</h5>
+				<p>Обшая сумма вклада: {{model.totalAmount}}</p>
+				<p>Итоговая сумма: {{model.result}}
+					<div class="text-warning">
+						В иностранной валюте: {{exchangeResult()}} по курсу
+						<a href="javascript:void(0)"
+							ng-show="!isShowEndCourseField"
+							ng-click="startChangeResultCourse()">{{model.endCourse}}</a>
+						<div class="form-inline" ng-show="isShowEndCourseField">
+							<input class="input-mini" type="text" value=""
+									autocomplete="off"
+									ng-model="model.endCourse"
+									ng-click="fieldClick($event)"
+									ng-change="changeResultCourse()"/>
+							<a class="btn btn-small" href="javascript:void(0)"
+								ng-click="setResultCourse()"><i class="icon-circle-arrow-right"></i></a>
+						</div>
+					</div>
+				</p>
+				<p>Критический курс, при котором вклад равносилен валютному: {{model.criticCourse}}</p>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" data-main="js/app" src="js/libs/require.js"></script>
+</body>
+</html>
