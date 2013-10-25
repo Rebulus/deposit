@@ -299,11 +299,17 @@ require(['utils', 'components', 'libs/angular'], function(utils){
 				$scope.model.isAdditional = !$scope.model.isAdditional;
 			},
 
+			checkCurrentAdditional: function(){
+				var additionals = $scope.model.additionals,
+					currentAdditional = additionals[additionals.length - 1];
+				return !!(utils.toFloat(currentAdditional.value) && utils.toFloat(currentAdditional.time));
+			},
+
 			addNewAdditional: function(){
 				var additionals = $scope.model.additionals,
 					currentAdditional = additionals[additionals.length - 1];
 				// Запрет добавления нового поступления, если оно не было заполнено
-				if(!currentAdditional.value || !currentAdditional.time){
+				if($scope.checkCurrentAdditional()){
 					return false;
 				}
 				// Добавление поступление и открытие нового поля для заполнения

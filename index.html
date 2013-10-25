@@ -93,7 +93,7 @@
 							</p>
 						</div>
 					</div>
-					<button class="btn" ng-click="addNewAdditional()" onclick="return false;">Новое поступление</button>
+					<button class="btn" ng-click="addNewAdditional()" onclick="return false;" ng-disabled="!checkCurrentAdditional()">Новое поступление</button>
 				</div>
 				<div class="control-group">
 					<div class="help-block" ng-show="!isCanCalculate()"><small>Для начала расчёта, пожалуйста, введите сумму вклада</small></div>
