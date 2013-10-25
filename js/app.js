@@ -309,7 +309,7 @@ require(['utils', 'components', 'libs/angular'], function(utils){
 				var additionals = $scope.model.additionals,
 					currentAdditional = additionals[additionals.length - 1];
 				// Запрет добавления нового поступления, если оно не было заполнено
-				if($scope.checkCurrentAdditional()){
+				if(!$scope.checkCurrentAdditional()){
 					return false;
 				}
 				// Добавление поступление и открытие нового поля для заполнения
