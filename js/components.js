@@ -18,7 +18,7 @@ define(['utils','libs/angular'], function(utils){
 
 					return ('<div class="control-group {{!$parent.depositForm[modelName].$valid && \'error\'}}">\
 								<label>{{label}}</label>\
-								<input ng-input-text type="text" value=""\
+								<input ng-input-text type="text" class="span12" value=""\
 									name="' + (modelName ? modelName : 'none') + '"\
 									ng-model="$parent.model[modelName]"\
 									ng-pattern="$parent.patterns[modelName]"\
