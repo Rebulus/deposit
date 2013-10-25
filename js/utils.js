@@ -55,6 +55,7 @@ define(function(){
 		 */
 		exchange: function(val, course){
 			var result = 0;
+			val = this.toFloat(val);
 			course = this.toFloat(course);
 			if(course){
 				result = val / this.toFloat(course);

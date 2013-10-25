@@ -31,7 +31,7 @@
 				             ng-error="Введите корректную сумму вклада"
 				             ng-model-name="startValue"
 				             ng-warning-text="В иностранной валюте: {{$parent.exchange()}}"
-				             ng-warning-condition="$parent.model.startValue && $parent.model.startCourse"
+				             ng-warning-condition="$parent.isCanShowExchangeToStartValue()"
 				             ng-mask="digit"
 				>
 				</input-field>
@@ -96,8 +96,8 @@
 					<button class="btn" ng-click="addNewAdditional()" onclick="return false;">Новое поступление</button>
 				</div>
 				<div class="control-group">
-					<div class="help-block" ng-show="!model.startValue"><small>Для начала расчёта, пожалуйста, введите сумму вклада</small></div>
-					<input type="submit" class="btn btn-primary" value="Рассчитать" ng-disabled="!model.startValue" />
+					<div class="help-block" ng-show="!isCanCalculate()"><small>Для начала расчёта, пожалуйста, введите сумму вклада</small></div>
+					<input type="submit" class="btn btn-primary" value="Рассчитать" ng-disabled="!isCanCalculate()" />
 				</div>
 
 			</form>

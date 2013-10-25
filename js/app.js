@@ -251,6 +251,14 @@ require(['utils', 'components', 'libs/angular'], function(utils){
 				}
 			},
 
+			isCanCalculate: function(){
+				return utils.toFloat($scope.model.startValue)
+			},
+
+			isCanShowExchangeToStartValue: function(){
+				return utils.toFloat($scope.model.startValue) && utils.toFloat($scope.model.startCourse);
+			},
+
 			showCalculation: function(){
 				$scope.model = angular.extend({}, $scope.previousCalculation[this.$index]);
 				$scope.calculateResult(null, true)

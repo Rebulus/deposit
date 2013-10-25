@@ -11,17 +11,6 @@ define(['utils','libs/angular'], function(utils){
 					modelName: '@ngModelName',
 					mask: '@ngMask'
 				},
-				controller: function($scope){
-					angular.extend($scope, {
-						change: function(){
-							if($scope.mask != 'digit') return;
-
-							var modelName = $scope.modelName,
-								model = $scope.$parent.model;
-							model[modelName] = utils.toDigit(model[modelName]);
-						}
-					})
-				},
 				template: function($elem, $attrs){
 					var modelName = $attrs.ngModelName,
 						warningText = $attrs.ngWarningText,
@@ -33,6 +22,7 @@ define(['utils','libs/angular'], function(utils){
 									name="' + (modelName ? modelName : 'none') + '"\
 									ng-model="$parent.model[modelName]"\
 									ng-pattern="$parent.patterns[modelName]"\
+									ng-mask="' + $attrs.ngMask + '"\
 									required\
 									/>\
 								<div class="text-error">{{error}}</div>' +
@@ -40,11 +30,6 @@ define(['utils','libs/angular'], function(utils){
 									'<div class="text-warning" ng-show="' + warningCondition + '">' + warningText + '</div>' :
 									'') +
 							'</div>');
-				},
-				link: function($scope){
-					$scope.$parent.$watch('model.' + $scope.modelName, function(){
-						$scope.change();
-					})
 				}
 			}
 		})
