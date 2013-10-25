@@ -1,0 +1,7 @@
+.error .text-error {
+	display: block;
+}
+
+.text-error {
+	display: none;
+}

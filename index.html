@@ -4,6 +4,7 @@
 	<meta charset="utf-8" />
 	<title>Расчет дипозитов</title>
 	<link type="text/css" href="css/bootstrap.css" rel="stylesheet" />
+	<link type="text/css" href="css/app.css" rel="stylesheet" />
 </head>
 <body>
 	<div class="container">
@@ -25,37 +26,25 @@
 			</div>
 			<form name="depositForm" class="span3" ng-submit="calculateResult();">
 				<h5>Расчет вклада</h5>
-				<div class="control-group {{!depositForm.startValue.$valid&&'error'}}">
-					<label>Начальная сумма вклада</label>
-					<input name="startValue" type="text" value=""
-							ng-pattern="patterns.startValue"
-							ng-model="model.startValue"
-							ng-click="fieldClick($event)"
-							required
-							autocomplete="off"/>
-					<div class="text-warning" ng-show="model.startValue && model.startCourse">В иностранной валюте: {{exchange()}}</div>
-					<div class="text-error" ng-show="!depositForm.startValue.$valid">Введите корректную сумму вклада</div>
-				</div>
-				<div class="control-group {{!depositForm.percent.$valid&&'error'}}">
-					<label>Годовой процент вклада</label>
-					<input name="percent" type="text" value=""
-							ng-pattern="patterns.percent"
-							ng-model="model.percent"
-							ng-click="fieldClick($event)"
-							required
-							autocomplete="off" />
-					<div class="text-error" ng-show="!depositForm.percent.$valid">Введите корректные проценты</div>
-					<div class="text-error" ng-show="model.percentPrevious">Предыдущее значение {{model.percentPrevious}}</div>
-				</div>
-				<div class="control-group {{!depositForm.time.$valid&&'error'}}">
-					<label>Время вклада</label>
-					<input name="time" type="text" value=""
-							ng-pattern="patterns.time"
-							ng-model="model.time"
-							ng-click="fieldClick($event)"
-							autocomplete="off" />
-					<div class="text-error" ng-show="!depositForm.time.$valid">Введите корректное время вклада</div>
-				</div>
+
+				<input-field ng-label="Начальная сумма вклада"
+				             ng-error="Введите корректную сумму вклада"
+				             ng-model-name="startValue"
+				             ng-warning-text="В иностранной валюте: {{$parent.exchange()}}"
+				             ng-warning-condition="$parent.model.startValue && $parent.model.startCourse"
+				>
+				</input-field>
+
+				<input-field ng-label="Годовой процент вклада"
+				             ng-error="Введите корректные проценты"
+				             ng-model-name="percent"
+				></input-field>
+
+				<input-field ng-label="Время вклада"
+				             ng-error="Введите корректное время вклада"
+				             ng-model-name="time"
+				></input-field>
+
 				<div class="control-group">
 					<label class="radio"><input type="radio" name="model.timeType" ng-model="model.timeType" value="0" />Вклад в месяцах</label>
 					<label class="radio"><input type="radio" name="model.timeType" ng-model="model.timeType" value="1" />Вклад в днях</label>
@@ -64,24 +53,17 @@
 					<label class="checkbox"><input type="checkbox" name="capitalize"
 													ng-model="model.isCapitalize" />Вклад c капитализацией процентов</label>
 				</div>
-				<div class="control-group {{!depositForm.startCourse.$valid&&'error'}}">
-					<label>Курс иностранной валюты на момент вклада</label>
-					<input name="startCourse" type="text" value=""
-							ng-pattern="patterns.startCourse"
-							ng-model="model.startCourse"
-							ng-click="fieldClick($event)"
-							autocomplete="off" />
-					<div class="text-error" ng-show="!depositForm.startCourse.$valid">Введите корректное значение курса</div>
-				</div>
-				<div class="control-group {{!depositForm.currencyPercent.$valid&&'error'}}">
-					<label>Проценты по вкладу в иностранной валюте</label>
-					<input name="currencyPercent" type="text" value=""
-							ng-pattern="patterns.currencyPercent"
-							ng-model="model.currencyPercent"
-							ng-click="fieldClick($event)"
-							autocomplete="off" />
-					<div class="text-error" ng-show="!depositForm.currencyPercent.$valid">Введите корректные проценты по валюте</div>
-				</div>
+
+				<input-field ng-label="Курс иностранной валюты на момент вклада"
+				             ng-error="Введите корректное значение курса"
+				             ng-model-name="startCourse"
+				></input-field>
+
+				<input-field ng-label="Проценты по вкладу в иностранной валюте"
+				             ng-error="Введите корректные проценты по валюте"
+				             ng-model-name="currencyPercent"
+				></input-field>
+
 				<div class="control-group" ng-show="model.isAdditional"><a href="javascript:void(0)" ng-click="showAdditional()">Отменить пополнение</a></div>
 				<div class="control-group" ng-show="!model.isAdditional"><a href="javascript:void(0)" ng-click="showAdditional()">Пополнить вклад</a></div>
 				<div class="control-group" ng-show="model.isAdditional">

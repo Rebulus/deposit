@@ -1,4 +1,4 @@
-require(['utils', 'libs/angular'], function(utils){
+require(['utils', 'components', 'libs/angular'], function(utils){
 	var intPattern = /^\d+$/,
 		digitPattern = /^(\d+([ ])?)+$/,
 		floatPattern = /^\d+(\.\d+)?$/,
@@ -34,7 +34,7 @@ require(['utils', 'libs/angular'], function(utils){
 			}
 		})();
 
-	var deposit = angular.module('Deposit', []);
+	var deposit = angular.module('Deposit', ['Components']);
 
 	deposit.controller('DepositFormController', ['$scope', function($scope){
 		angular.extend($scope, {

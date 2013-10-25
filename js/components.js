@@ -5,19 +5,30 @@ define(['libs/angular'], function(){
 				restrict: 'E',
 				replace: true,
 				transclude: true,
-				template: '<div class="control-group {{!depositForm.startValue.$valid&&'error'}}">\
-							<label>Начальная сумма вклада</label>\
-							<input name="startValue" type="text" value=""\
-								ng-pattern="patterns.startValue"\
-								ng-model="model.startValue"\
-								ng-click="fieldClick($event)"\
-								required\
-								autocomplete="off"/>\
-							<div class="text-warning" ng-show="model.startValue && model.startCourse">В иностранной валюте: {{exchange()}}</div>\
-							<div class="text-error" ng-show="!depositForm.startValue.$valid">Введите корректную сумму вклада</div>\
-						</div>',
-				link: function (scope, element, attrs) {
-					console.log(scope, element, attrs);
+				scope: {
+					label: '@ngLabel',
+					error: '@ngError',
+					modelName: '@ngModelName'
+				},
+				template: function($elem, $attrs){
+					var modelName = $attrs.ngModelName,
+						warningText = $attrs.ngWarningText,
+						warningCondition = $attrs.ngWarningCondition;
+
+					return ('<div class="control-group {{!$parent.depositForm[modelName].$valid && \'error\'}}">\
+								<label>{{label}}</label>\
+								<input type="text" value=""\
+									name="' + (modelName ? modelName : 'none') + '"\
+									ng-model="$parent.model[modelName]"\
+									ng-pattern="$parent.patterns[modelName]"\
+									ng-click="$parent.fieldClick($event)"\
+									required\
+									autocomplete="off"/>\
+								<div class="text-error">{{error}}</div>' +
+								(warningText ?
+									'<div class="text-warning" ng-show="' + warningCondition + '">' + warningText + '</div>' :
+									'') +
+							'</div>');
 				}
 			}
 		});
