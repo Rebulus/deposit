@@ -218,7 +218,7 @@ require(['utils', 'components', 'libs/angular'], function(utils){
 				}
 
 				model.result = result.toFixed(2);
-				model.endCourse = model.endCourse ? model.endCourse : model.startCourse;
+				model.endCourse = utils.toFloat(model.endCourse) ? model.endCourse : model.startCourse;
 				model.criticCourse = utils.exchange(result, currencyResult);
 
 				// Приведение к формату чисел
@@ -277,7 +277,7 @@ require(['utils', 'components', 'libs/angular'], function(utils){
 			},
 
 			exchangeResult: function(){
-				return utils.exchange(utils.toInt($scope.model.result), $scope.model.endCourse);
+				return utils.exchange($scope.model.result, $scope.model.endCourse);
 			},
 
 			startChangeResultCourse: function(){
@@ -320,6 +320,14 @@ require(['utils', 'components', 'libs/angular'], function(utils){
 					timeType: currentAdditional.timeType,
 					isNew: true
 				})
+			},
+
+			removeAdditional: function($event){
+				var target = $event.target ? $event.target : $event.srcElement,
+					index;
+				target = angular.element(target);
+				index = utils.toInt(target.attr('data-index'));
+				$scope.model.additionals.splice(index, 1);
 			}
 		});
 

@@ -79,6 +79,7 @@
 							{{additional.value}}
 							<span ng-show="additional.timeType == 0">в {{additional.time}} месяц</span>
 							<span ng-show="additional.timeType == 1">на {{additional.time}} день</span>
+							<a class="icon-remove" href="javascript:void(0)" ng-click="removeAdditional($event)" data-index="{{$index}}"></a>
 						</p>
 						<div ng-show="additional.isNew">
 							<input class="input-mini" ng-input-text type="text" name="additional_{{$index}}" ng-model="additional.value" ng-mask="digit" />
