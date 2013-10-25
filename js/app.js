@@ -32,7 +32,8 @@ require(['utils', 'components', 'libs/angular'], function(utils){
 			else {
 				return fakeLocalStorage;
 			}
-		})();
+		})(),
+		toDigit = ['startValue', 'totalAmount', 'startCourse', 'endCourse', 'result', 'criticCourse'];
 
 	var deposit = angular.module('Deposit', ['Components']);
 
@@ -68,14 +69,6 @@ require(['utils', 'components', 'libs/angular'], function(utils){
 				}]
 			},
 
-			startValueToDigit: function(){
-				$scope.model.startValue = utils.toDigit($scope.model.startValue);
-			},
-
-			courseToDigit: function(){
-				$scope.model.startCourse = utils.toDigit($scope.model.startCourse);
-			},
-
 			// Чтение предыдущих калькуляций
 			setCalculation: function(){
 				$scope.previousCalculation = [];
@@ -87,11 +80,6 @@ require(['utils', 'components', 'libs/angular'], function(utils){
 						$scope.previousCalculation.push(depositItem);
 					}
 				}
-			},
-
-			fieldClick: function(event){
-				var target = event.srcElement ? event.srcElement : event.target;
-				target.select();
 			},
 
 			// Перевод объекта данных к дням
@@ -232,6 +220,13 @@ require(['utils', 'components', 'libs/angular'], function(utils){
 				model.result = result.toFixed(2);
 				model.endCourse = model.endCourse ? model.endCourse : model.startCourse;
 				model.criticCourse = utils.exchange(result, currencyResult);
+
+				// Приведение к формату чисел
+				for(var key in toDigit){
+					if(toDigit.hasOwnProperty(key)){
+						model[toDigit[key]] = utils.toDigit(model[toDigit[key]]);
+					}
+				}
 
 				// Запись реузльтата расчета в память
 				if(!noSetToBuffer){

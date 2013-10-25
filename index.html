@@ -32,6 +32,7 @@
 				             ng-model-name="startValue"
 				             ng-warning-text="В иностранной валюте: {{$parent.exchange()}}"
 				             ng-warning-condition="$parent.model.startValue && $parent.model.startCourse"
+				             ng-mask="digit"
 				>
 				</input-field>
 
@@ -57,6 +58,7 @@
 				<input-field ng-label="Курс иностранной валюты на момент вклада"
 				             ng-error="Введите корректное значение курса"
 				             ng-model-name="startCourse"
+				             ng-mask="digit"
 				></input-field>
 
 				<input-field ng-label="Проценты по вкладу в иностранной валюте"
@@ -64,8 +66,13 @@
 				             ng-model-name="currencyPercent"
 				></input-field>
 
-				<div class="control-group" ng-show="model.isAdditional"><a href="javascript:void(0)" ng-click="showAdditional()">Отменить пополнение</a></div>
-				<div class="control-group" ng-show="!model.isAdditional"><a href="javascript:void(0)" ng-click="showAdditional()">Пополнить вклад</a></div>
+				<div class="control-group" >
+					<a href="javascript:void(0)" ng-click="showAdditional()">
+						<span ng-show="model.isAdditional">Отменить пополнение</span>
+						<span ng-show="!model.isAdditional">Пополнить вклад</span>
+					</a>
+				</div>
+
 				<div class="control-group" ng-show="model.isAdditional">
 					<div class="control-group" ng-repeat="additional in model.additionals">
 						<p ng-show="!additional.isNew">
@@ -74,10 +81,10 @@
 							<span ng-show="additional.timeType == 1">на {{additional.time}} день</span>
 						</p>
 						<div ng-show="additional.isNew">
-							<input class="input-mini" type="text" name="additional_{{$index}}" ng-model="additional.value" ng-click="fieldClick($event)" />
+							<input class="input-mini" ng-input-text type="text" name="additional_{{$index}}" ng-model="additional.value" ng-mask="digit" />
 							<span ng-show="additional.timeType==0">в</span>
 							<span ng-show="additional.timeType==1">на</span>
-							<input class="input-mini" type="text" name="additional_{{$index}}.time" ng-model="additional.time" ng-click="fieldClick($event)" />
+							<input class="input-mini" ng-input-text type="text" name="additional_{{$index}}.time" ng-model="additional.time" />
 							<span ng-show="additional.timeType == 0">месяц</span>
 							<span ng-show="additional.timeType == 1">день</span>
 							<p>
@@ -104,11 +111,11 @@
 							ng-show="!isShowEndCourseField"
 							ng-click="startChangeResultCourse()">{{model.endCourse}}</a>
 						<div class="form-inline" ng-show="isShowEndCourseField">
-							<input class="input-mini" type="text" value=""
-									autocomplete="off"
+							<input class="input-mini" ng-input-text type="text" value=""
 									ng-model="model.endCourse"
-									ng-click="fieldClick($event)"
-									ng-change="changeResultCourse()"/>
+									ng-change="changeResultCourse()"
+							        ng-mask="digit"
+									/>
 							<a class="btn btn-small" href="javascript:void(0)"
 								ng-click="setResultCourse()"><i class="icon-circle-arrow-right"></i></a>
 						</div>
