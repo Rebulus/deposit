@@ -1,5 +1,5 @@
-define(['utils','libs/angular'], function(utils){
-	angular.module('Components', [])
+define(['utils','libs/angular'], function(){
+	angular.module('Deposit.Components', ['Deposit.Utils'])
 		.directive('inputField', function(){
 			return {
 				restrict: 'E',
@@ -33,19 +33,26 @@ define(['utils','libs/angular'], function(utils){
 				}
 			}
 		})
-		.directive('ngInputText', ['$parse', function($parse){
+		.directive('ngInputText', ['$parse', 'utils', function($parse, utils){
 			return {
 				link: function ($scope, $element, $attrs) {
-					var modelAccessor = $parse($attrs.ngModel),
-						maskType = $attrs.ngMask;
+					var modelAccessor = $parse($attrs.ngModel);
+					var maskType = $attrs.ngMask;
+					var hasFirstClick = false;
 
 					$element
 						.attr('autocomplete', 'off')
 						// TODO - remove timeout
 						.on('focus click', function(){
 							setTimeout(function(){
-								this.select();
+								if (!hasFirstClick) {
+									this.select();
+								}
+								hasFirstClick = true;
 							}.bind(this))
+						})
+						.on('blur', function() {
+							hasFirstClick = false;
 						});
 
 					$scope.$watch(modelAccessor, function (val) {
