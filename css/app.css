@@ -1,7 +1,15 @@
-.error .text-error {
+.input-small {
+	width: 70px !important;
+}
+
+.input-xsmall {
+	width: 53px !important;
+}
+
+.error .text-danger {
 	display: block;
 }
 
-.text-error {
+.text-danger {
 	display: none;
 }

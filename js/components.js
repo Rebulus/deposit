@@ -16,16 +16,16 @@ define(['angular', 'utils'], function(angular){
 						warningText = $attrs.ngWarningText,
 						warningCondition = $attrs.ngWarningCondition;
 
-					return ('<div class="control-group {{!$parent.depositForm[modelName].$valid && \'error\'}}">\
+					return ('<div class="form-group {{!$parent.depositForm[modelName].$valid && \'error\'}}">\
 								<label>{{label}}</label>\
-								<input ng-input-text type="text" class="span12" value=""\
+								<input ng-input-text type="text" class="form-control" value=""\
 									name="' + (modelName ? modelName : 'none') + '"\
 									ng-model="$parent.model[modelName]"\
 									ng-pattern="$parent.patterns[modelName]"\
 									ng-mask="' + $attrs.ngMask + '"\
 									required\
 									/>\
-								<div class="text-error">{{error}}</div>' +
+								<div class="text-danger">{{error}}</div>' +
 								(warningText ?
 									'<div class="text-warning" ng-show="' + warningCondition + '">' + warningText + '</div>' :
 									'') +
