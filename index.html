@@ -83,8 +83,8 @@
 						<span class="text-warning">({{utils.exchange(additional.value, additional.course)}})</span>
 						<span ng-show="additional.timeType == 0">в {{additional.time}} месяц</span>
 						<span ng-show="additional.timeType == 1">на {{additional.time}} день</span>
-						<a class="glyphicon glyphicon-remove" href="javascript:void(0)" ng-click="removeAdditional($event)" data-index="{{$index}}"></a>
-						<a class="glyphicon glyphicon-edit" href="javascript:void(0)" ng-click="editAdditional($event)" data-index="{{$index}}"></a>
+						<a class="button-link glyphicon glyphicon-remove" href="javascript:void(0)" ng-click="removeAdditional($index)"></a>
+						<a class="button-link glyphicon glyphicon-edit" href="javascript:void(0)" ng-click="editAdditional($index)"></a>
 					</p>
 					<div ng-show="additional.isNew">
 						<input class="form-control input-small" ng-input-text type="text" name="additional_{{$index}}" ng-model="additional.value" ng-mask="digit" />
@@ -96,7 +96,7 @@
 							<option value="0">месяц</option>
 							<option value="1">день</option>
 						</select>
-						<button class="btn glyphicon glyphicon-circle-arrow-right" ng-click="addNewAdditional()" onclick="return false;" ng-disabled="!checkCurrentAdditional()"></button>
+						<button class="btn glyphicon glyphicon-circle-arrow-right" ng-click="addNewAdditional($index)" onclick="return false;" ng-disabled="!checkCurrentAdditional($index)"></button>
 					</div>
 				</div>
 			</div>

@@ -261,42 +261,37 @@ requirejs(['angular', 'utils', 'components', 'model'], function(angular){
 					$scope.model.isAdditional = !$scope.model.isAdditional;
 				},
 
-				checkCurrentAdditional: function(){
+				checkCurrentAdditional: function(index){
 					var additionals = $scope.model.additionals,
-						currentAdditional = additionals[additionals.length - 1];
+						currentAdditional = additionals[index];
 					return !!(utils.toFloat(currentAdditional.value) && utils.toFloat(currentAdditional.time));
 				},
 
-				addNewAdditional: function(){
+				addNewAdditional: function(index){
 					var additionals = $scope.model.additionals,
-						currentAdditional = additionals[additionals.length - 1];
+						currentAdditional = additionals[index];
 					// Запрет добавления нового поступления, если оно не было заполнено
-					if(!$scope.checkCurrentAdditional()){
+					if(!$scope.checkCurrentAdditional(index)){
 						return false;
 					}
 					// Добавление поступление и открытие нового поля для заполнения
 					currentAdditional.isNew = false;
-					additionals.push({
-						value: 0,
-						time: 0,
-						timeType: currentAdditional.timeType,
-						isNew: true
-					})
+
+					if (index === additionals.length - 1) {
+						additionals.push({
+							value: 0,
+							time: 0,
+							timeType: currentAdditional.timeType,
+							isNew: true
+						});
+					}
 				},
 
-				removeAdditional: function($event){
-					var target = $event.target ? $event.target : $event.srcElement,
-						index;
-					target = angular.element(target);
-					index = utils.toInt(target.attr('data-index'));
+				removeAdditional: function(index){
 					$scope.model.additionals.splice(index, 1);
 				},
 
-				editAdditional: function($event) {
-					var target = $event.target ? $event.target : $event.srcElement,
-						index;
-					target = angular.element(target);
-					index = utils.toInt(target.attr('data-index'));
+				editAdditional: function(index) {
 					$scope.model.additionals[index].isNew = true;
 				},
 
