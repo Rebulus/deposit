@@ -1,4 +1,4 @@
-define(['libs/angular'], function(){
+define(['angular'], function(angular){
 	angular.module('Deposit.Utils', [])
 		.factory('utils', function() {
 			var spacePattern = /\s+/g;

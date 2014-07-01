@@ -1,4 +1,4 @@
-define(['utils','libs/angular'], function(){
+define(['angular', 'utils'], function(angular){
 	angular.module('Deposit.Components', ['Deposit.Utils'])
 		.directive('inputField', function(){
 			return {

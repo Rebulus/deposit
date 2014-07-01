@@ -1,4 +1,15 @@
-require(['libs/angular', 'utils', 'components', 'model'], function(){
+requirejs.config({
+	paths: {
+		'angular': 'libs/angular/angular'
+	},
+	shim: {
+		'angular': {
+			exports: 'angular'
+		}
+	}
+});
+
+requirejs(['angular', 'utils', 'components', 'model'], function(angular){
 	var intPattern = /^\d+$/,
 		digitPattern = /^(\d+([ ])?)+$/,
 		floatPattern = /^\d+(\.\d+)?$/,

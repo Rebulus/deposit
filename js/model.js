@@ -1,4 +1,4 @@
-define(['libs/angular', 'utils'], function() {
+define(['angular', 'utils'], function(angular) {
 	angular.module('Deposit.Models', ['Deposit.Utils'])
 		.factory('model', ['utils', function(utils) {
 			// Максимальное колличество сохраняемых депозитов
